@@ -1,0 +1,7 @@
+name: Guitest
+version: ${project.version}
+main: com.github.soramame0256.guitest.Guitest
+authors: [ soramame_256 ]
+commands:
+  testgui:
+    description: あれ。
