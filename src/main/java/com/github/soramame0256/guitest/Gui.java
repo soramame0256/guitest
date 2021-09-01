@@ -2,12 +2,9 @@ package com.github.soramame0256.guitest;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,32 +22,66 @@ public class Gui {
         inventory = Bukkit.createInventory(null, row*9,title);
         guilist.add(this);
     }
+    /**
+     * @return gui inventory
+     */
     public Inventory getGui() {
         return this.inventory;
     }
 
-    public Boolean isPlayerViewing(Player p){
-        return playerGuiMap.get(p).equals(this);
+    /**
+     *
+     * @param player target
+     * @return whether or not
+     */
+    public Boolean isPlayerViewing(Player player){
+        return playerGuiMap.get(player).equals(this);
     }
+
+    /**
+     * @return When player clicked gui, Whether to cancel
+     */
     public Boolean getStealable() {
         return Stealable;
     }
 
+    /**
+     * @return slot number and Runnable that will be fired on click
+     */
     public Map<Integer, Runnable> getSlotrunnablemap() {
         return slotrunnablemap;
     }
 
+    /**
+     *
+     * @return Last clicked Player
+     */
     public Player getLatestClickedPlayer() {
         return LatestClickedPlayer;
     }
-    public void close(Player p){
-        playerGuiMap.remove(p);
+
+    /**
+     *
+     * @param player player who want to close gui
+     */
+    public void close(Player player){
+        playerGuiMap.remove(player);
     }
 
+    /**
+     * It should not be used.
+     * May cause errors if used.
+     */
     public void setLatestClickedPlayer(Player latestClickedPlayer) {
         LatestClickedPlayer = latestClickedPlayer;
     }
 
+    /**
+     *
+     * @param r Runnable that fires when the slot is clicked
+     * @param slot targeted slot
+     * @param item ItemStack to be set in the slot
+     */
     public void setSlot(Runnable r, int slot, ItemStack item){
         if(slotrunnablemap.containsKey(slot)){
             slotrunnablemap.remove(slot);
@@ -64,9 +95,19 @@ public class Gui {
             this.inventory.setItem(slot,item);
         }
     }
+
+    /**
+     *
+     * @param b Whether to make it possible to steal items from gui
+     */
     public void setStealable(Boolean b){
         this.Stealable = b;
     }
+
+    /**
+     * open this gui to target
+     * @param p targeted player
+     */
     public void open(Player p){
         if(p.getInventory() != null){
             p.closeInventory();
