@@ -17,7 +17,6 @@ public class Handler implements Listener {
         if(e.getClickedInventory() == null) return;
         if(!Gui.playerGuiMap.containsKey((Player) e.getWhoClicked())) return;
         Gui gui = Gui.playerGuiMap.get((Player)e.getWhoClicked());
-        System.out.println(gui);
         if (gui.isPlayerViewing((Player) e.getWhoClicked())) {
             gui.setLatestClickedPlayer((Player) e.getWhoClicked());
             if (!gui.getStealable()) {

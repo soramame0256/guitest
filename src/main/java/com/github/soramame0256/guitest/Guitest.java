@@ -12,8 +12,8 @@ public final class Guitest extends JavaPlugin {
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new Handler(),this);
-        testGui testGui = new testGui();
-        new test1Gui();
+        TestGui.setup();
+        TestGui2.setup();
     }
 
     @Override
@@ -26,11 +26,11 @@ public final class Guitest extends JavaPlugin {
         if(command.getName().equals("testgui")) {
             if (sender instanceof Player) {
                 if(args.length == 0){
-                    testGui.testGui.open((Player) sender);
+                    TestGui.testGui.open((Player) sender);
                     return true;
                 }
                 if(args[0].equals("1")) {
-                    test1Gui.testGui.open((Player) sender);
+                    TestGui2.testGui.open((Player) sender);
                     return true;
                 }
             }

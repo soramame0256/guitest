@@ -1,6 +1,8 @@
 package com.github.soramame0256.guitest;
 
+import javafx.util.Builder;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -15,11 +17,15 @@ public class Gui {
     private Player latestClickedPlayer;
     private Map<Integer,Runnable> slotRunnableMap = new HashMap<>();
     private Map<Integer,ItemStack> slotItemMap = new HashMap<>();
-    private Boolean stealable = true;
+    private Boolean stealable;
     public static List<Gui> guiList = new ArrayList<>();
     public static Map<Player,Gui> playerGuiMap = new HashMap<>();
-    public Gui(int row,String title){
-        inventory = Bukkit.createInventory(null, row*9,title);
+    private Gui(Builder b){
+        inventory = Bukkit.createInventory(null, b.row*9,b.title);
+        stealable = b.stealable;
+        for(int i=0;i < b.row*9;i++){
+            this.setSlot(()->{},i,b.defaultItem);
+        }
         guiList.add(this);
     }
     /**
@@ -117,14 +123,66 @@ public class Gui {
     }
     @Override
     public String toString(){
-        if(this.getlatestClickedPlayer() == null){
+        if(this.getLatestClickedPlayer() == null){
             this.latestClickedPlayer = (Player) Bukkit.getOnlinePlayers().toArray()[0];
         }
         return "Title:"+this.inventory.getTitle()+
-                "LastClicked:"+this.getlatestClickedPlayer().getDisplayName()+
+                "LastClicked:"+this.getLatestClickedPlayer().getDisplayName()+
                 "Stealable:"+this.stealable+
                 "runnable:"+this.slotRunnableMap+
                 "slotitemmap:"+this.slotItemMap+
                 "inventory:"+this.inventory;
+    }
+    public static class Builder {
+        private Boolean stealable = true;
+        private String title = "null";
+        private Integer row = 1;
+        private ItemStack defaultItem = new ItemStack(Material.AIR);
+
+        /**
+         * @return GuiBuilder Instance
+         */
+        public static Builder getBuilder(){
+            return new Builder();
+        }
+
+        /**
+         * @param stealable Whether to make it possible to steal items from gui
+         */
+        public Builder setStealable(Boolean stealable){
+            this.stealable = stealable;
+            return this;
+        }
+
+        /**
+         * @param str Gui Title
+         */
+        public Builder setTitle(String str){
+            this.title = str;
+            return this;
+        }
+
+        /**
+         * @param i Gui row
+         */
+        public Builder setRow(Integer i){
+            row = i;
+            return this;
+        }
+
+        /**
+         * @param i ItemStack to fill Gui
+         */
+        public Builder setDefaultItem(ItemStack i){
+            defaultItem = i;
+            return this;
+        }
+
+        /**
+         * @return Gui
+         */
+        public Gui build(){
+            return new Gui(this);
+        }
     }
 }

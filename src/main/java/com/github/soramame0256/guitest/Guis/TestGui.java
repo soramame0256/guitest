@@ -4,11 +4,15 @@ import com.github.soramame0256.guitest.Gui;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class testGui {
+public class TestGui {
     public static Gui testGui;
-    public testGui(){
-        testGui = new Gui(6,"test");
-        testGui.setStealable(false);
+    public static void setup(){
+        testGui = Gui.Builder.getBuilder()
+                .setRow(6)
+                .setTitle("テスト")
+                .setStealable(false)
+                .setDefaultItem(new ItemStack(Material.BEDROCK))
+                .build();
         testGui.setSlot(() -> testGui.getLatestClickedPlayer().sendMessage("テスト"),0, new ItemStack(Material.DIAMOND));
     }
 }
