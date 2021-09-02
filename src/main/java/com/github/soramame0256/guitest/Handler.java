@@ -23,8 +23,8 @@ public class Handler implements Listener {
             if (!gui.getStealable()) {
                 e.setCancelled(true);
             }
-            if (gui.getSlotrunnablemap().containsKey(e.getSlot())) {
-                gui.getSlotrunnablemap().get(e.getSlot()).run();
+            if (gui.getSlotRunnableMap().containsKey(e.getSlot())) {
+                gui.getSlotRunnableMap().get(e.getSlot()).run();
             }
         }
     }
