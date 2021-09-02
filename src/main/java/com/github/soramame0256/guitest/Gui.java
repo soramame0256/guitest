@@ -12,15 +12,15 @@ import java.util.Map;
 
 public class Gui {
     private Inventory inventory;
-    private Player LatestClickedPlayer;
-    private Map<Integer,Runnable> slotrunnablemap = new HashMap<>();
-    private Map<Integer,ItemStack> slotitemmap = new HashMap<>();
-    private Boolean Stealable = true;
-    public static List<Gui> guilist = new ArrayList<>();
+    private Player latestClickedPlayer;
+    private Map<Integer,Runnable> slotRunnableMap = new HashMap<>();
+    private Map<Integer,ItemStack> slotItemMap = new HashMap<>();
+    private Boolean stealable = true;
+    public static List<Gui> guiList = new ArrayList<>();
     public static Map<Player,Gui> playerGuiMap = new HashMap<>();
     public Gui(int row,String title){
         inventory = Bukkit.createInventory(null, row*9,title);
-        guilist.add(this);
+        guiList.add(this);
     }
     /**
      * @return gui inventory
@@ -42,14 +42,14 @@ public class Gui {
      * @return When player clicked gui, Whether to cancel
      */
     public Boolean getStealable() {
-        return Stealable;
+        return stealable;
     }
 
     /**
      * @return slot number and Runnable that will be fired on click
      */
-    public Map<Integer, Runnable> getSlotrunnablemap() {
-        return slotrunnablemap;
+    public Map<Integer, Runnable> getSlotRunnableMap() {
+        return slotRunnableMap;
     }
 
     /**
@@ -57,7 +57,7 @@ public class Gui {
      * @return Last clicked Player
      */
     public Player getLatestClickedPlayer() {
-        return LatestClickedPlayer;
+        return latestClickedPlayer;
     }
 
     /**
@@ -73,7 +73,7 @@ public class Gui {
      * May cause errors if used.
      */
     public void setLatestClickedPlayer(Player latestClickedPlayer) {
-        LatestClickedPlayer = latestClickedPlayer;
+        this.latestClickedPlayer = latestClickedPlayer;
     }
 
     /**
@@ -83,15 +83,15 @@ public class Gui {
      * @param item ItemStack to be set in the slot
      */
     public void setSlot(Runnable r, int slot, ItemStack item){
-        if(slotrunnablemap.containsKey(slot)){
-            slotrunnablemap.remove(slot);
-            slotrunnablemap.put(slot,r);
-            slotitemmap.remove(slot);
-            slotitemmap.put(slot,item);
+        if(slotRunnableMap.containsKey(slot)){
+            slotRunnableMap.remove(slot);
+            slotRunnableMap.put(slot,r);
+            slotItemMap.remove(slot);
+            slotItemMap.put(slot,item);
             this.inventory.setItem(slot,item);
         }else{
-            slotrunnablemap.put(slot,r);
-            slotitemmap.put(slot,item);
+            slotRunnableMap.put(slot,r);
+            slotItemMap.put(slot,item);
             this.inventory.setItem(slot,item);
         }
     }
@@ -101,7 +101,7 @@ public class Gui {
      * @param b Whether to make it possible to steal items from gui
      */
     public void setStealable(Boolean b){
-        this.Stealable = b;
+        this.stealable = b;
     }
 
     /**
@@ -117,14 +117,14 @@ public class Gui {
     }
     @Override
     public String toString(){
-        if(this.getLatestClickedPlayer() == null){
-            this.LatestClickedPlayer = (Player) Bukkit.getOnlinePlayers().toArray()[0];
+        if(this.getlatestClickedPlayer() == null){
+            this.latestClickedPlayer = (Player) Bukkit.getOnlinePlayers().toArray()[0];
         }
         return "Title:"+this.inventory.getTitle()+
-                "LastClicked:"+this.getLatestClickedPlayer().getDisplayName()+
-                "Stealable:"+this.Stealable+
-                "runnable:"+this.slotrunnablemap+
-                "slotitemmap:"+this.slotitemmap+
+                "LastClicked:"+this.getlatestClickedPlayer().getDisplayName()+
+                "Stealable:"+this.stealable+
+                "runnable:"+this.slotRunnableMap+
+                "slotitemmap:"+this.slotItemMap+
                 "inventory:"+this.inventory;
     }
 }
